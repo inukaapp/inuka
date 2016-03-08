@@ -1,0 +1,425 @@
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2016 Pearson plc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+
+
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Inuka</title>
+		<meta name="description" content="Inuka MVP v1">
+		<meta name="author" content="Inuka Xprize team">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com http://www.google-analytics.com http://inukaapp.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<style>
+			body{
+				padding:0;
+				margin:0;
+				font-family:Helvetica;
+				font-size:18px;
+				line-height:1.5em;
+			}
+			.books{
+				list-style:none;
+				padding:0;
+				margin:10px 20px 10px 20px;
+			}
+			.books-book-link{
+				display:block;
+				border-left:15px solid #87c82b;
+				box-shadow: 0px 0px 3px rgba(0,0,0,.2);
+				padding:10px;
+				margin:10px 0 10px 0;
+				text-decoration:none;
+				color:#000;
+				background-color:#fff;
+				overflow:auto;
+			}
+			.books-book-level-1{
+				border-left:15px solid #87c82b;
+			}
+			.books-book-level-2{
+				border-left:15px solid #e1be1d;
+			}
+			.books-book-level-3{
+				border-left:15px solid #e16b1d;
+			}
+			.books-book-cover{
+				float:right;
+				margin-left:20px;
+				width:50px;
+			}
+			.books-book-title{
+				margin:0 0 .5em 0;
+				font-size:16px;
+				font-weight:bold;
+				line-height:1.2em;
+			}
+			.books-book-link p{
+				margin:0;
+				font-size:13px;
+				font-weight:normal;
+				color:#888;
+				line-height:1.2em;
+			}
+			.app-page{
+				background-color:whitesmoke;
+				position:absolute;
+				top:0;
+				right:0;
+				bottom:0;
+				left:0;
+				overflow:scroll;
+			}
+			.intro-slides{
+				list-style:none;
+				padding:0;
+				margin:0;
+			}
+			.intro-slide{
+				background-color:whitesmoke;
+				position:absolute;
+				background-size:cover;
+				background-position:50% 50%;
+				top:0;
+				right:0;
+				bottom:0;
+				left:0;
+				display:none;
+				padding:0;
+				margin:0;
+			}
+			#intro-close{
+				font-size:30px;
+				text-decoration:none;
+				position:absolute;
+				top:10px;
+				right:15px;
+				font-weight:300;
+				color:#fff;
+			}
+			#menu{
+				display:none;
+			}
+			#dashboard{
+				display:none;
+			}
+			#dashboard-close{
+				font-size:30px;
+				text-decoration:none;
+				position:fixed;
+				top:10px;
+				right:15px;
+				font-weight:300;
+				color:#ccc;
+			}
+			#book{
+				display:none;
+			}
+			#book-close{
+				font-size:30px;
+				text-decoration:none;
+				position:fixed;
+				top:10px;
+				right:15px;
+				font-weight:300;
+				color:#ccc;
+			}
+			#stats{
+				display:none;
+			}
+			#stats-close{
+				font-size:30px;
+				text-decoration:none;
+				position:fixed;
+				top:10px;
+				right:15px;
+				font-weight:300;
+				color:#ccc;
+			}
+			.page{
+				margin: 20px 50px 20px 20px;
+				padding:20px;
+				box-shadow: 0px 0px 3px rgba(0,0,0,.2);
+				background-color:#fff;
+			}
+			.cover{
+				margin:0;
+				padding:10px 0 20px 0;
+				
+				background-color:#222;
+				border-color:#111;
+				color:#fff;
+				text-align:center;
+			}
+			.back{
+				margin:100px 0 0 0;
+				padding:10px 80px 20px 40px;
+				
+				background-color:#222;
+				border-color:#111;
+				color:#888;
+				font-size:12px;
+			}
+			.cover img{
+				width:100%;
+			}
+			.page img{
+				width:100%;
+			}
+			.back img{
+				width:40%;
+				float:right;
+				margin:20px 0 20px 20px;
+			}
+			h1{
+				margin-top:1em;
+				font-size:24px;
+				line-height:1.5em;
+				font-weight:300;
+			}
+			.content{
+				padding:0 10px 0 10px;
+			}
+			.cover .content{
+				padding:0 50px 0 20px;
+			}
+			#stats-link{
+				font-size:18px;
+				color:#fff;
+				background-color:#87c82b;
+				line-height:40px;
+				text-align:center;
+				display:block;
+				text-decoration:none;
+				margin:30px 30px 20px 30px;
+				border-radius:4px;
+				border-bottom:2px solid #669621;
+			}
+			.stats-title{
+				text-align:center;
+				margin-top:1em;
+				font-size:24px;
+				line-height:1.5em;
+				font-weight:300;
+			}
+			.days{
+				text-align:center;
+			}
+			.day{
+				box-sizing:border-box;
+				text-align:center;
+				height:78px;
+				width:78px;
+				border-radius:39px;
+				background-color:#fff;
+				border:1px solid #eee;
+				padding-top:18px;
+				margin:10px auto 10px auto;
+			}
+			.day-label{
+				font-size:12px;
+				margin-bottom:5px;
+				font-weight:normal;
+				display:block;
+				line-height:12px;
+			}
+			.day-sum{
+				font-size:24px;
+				font-weight:bold;
+				display:block;
+				line-height:24px;
+			}
+			#day0{
+				border:1px solid #7aa938;
+				background-color:#87c82b;
+				color:#fff;
+			}
+			.q-text-a-image, .q-text-a-text, .q-image-a-text{
+				overflow:auto;
+			}
+			.q-text-a-image .answers{
+				text-align:center;
+			}
+			.q-text-a-image .answer{
+				width:46%;
+				height:46%;
+				margin:0 2% 0 2%;
+				display:inline-block;
+				border-radius:10px;
+				border:2px solid #fff;
+				box-sizing:border-box;
+				overflow:hidden;
+				padding:0!important;
+			}
+			.q-text-a-image .answer img{
+				width:100%;
+				height:100%;
+				margin:0!important;
+				padding:0!important;
+			}
+			.q-text-a-text .answer, .q-image-a-text .answer{
+				padding:5px 20px 5px 20px;
+				border-radius:10px;
+				border:2px solid #eee;
+				margin-top:5px;
+			}
+			.answers{
+				margin-top:10px;
+			}
+			.log-line{
+				border-top:1px solid #eee;
+				margin:0;
+			}
+			.db-id{
+				font-size:10px;
+				color:#999;
+			}
+			.db-id, .book-id, .question-id{
+				display:inline-block;
+				padding:2%;
+				width:26%;
+			}
+			.is-correct{
+				display:inline-block;
+				padding:2%;
+				width:6%;
+			}
+			.test-log{
+				padding:20px;
+			}
+			.is-correct-y{
+				background-color:#87c82b;
+				color:#fff;
+			}
+			#language-english-link, #language-swahili-link{
+				font-size:18px;
+				color:#fff;
+				background-color:#87c82b;
+				line-height:40px;
+				text-align:center;
+				display:block;
+				text-decoration:none;
+				margin:30px 30px 20px 30px;
+				border-radius:4px;
+				border-bottom:2px solid #669621;
+			}
+			#update-link, #facebook-like-link{
+				font-size:18px;
+				color:#87c82b;
+				background-color:#fff;
+				line-height:42px;
+				text-align:center;
+				display:block;
+				text-decoration:none;
+				margin:30px 30px 20px 30px;
+				border-radius:4px;
+				border:1px solid #87c82b;
+			}
+			#dashboard-close{
+				position:static;
+				float:right;
+				padding:10px;
+			}
+			.books{
+				clear:both;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="intro" class="app-page">
+			<ul class="intro-slides">
+				<li id="intro-slide-1" class="intro-slide" style="background-image:url(images/1.jpg);"></li>
+				<li id="intro-slide-2" class="intro-slide" style="background-image:url(images/2.jpg);"></li>
+				<li id="intro-slide-3" class="intro-slide" style="background-image:url(images/3.jpg);"></li>
+				<li id="intro-slide-4" class="intro-slide" style="background-image:url(images/4.jpg);"></li>
+				<li id="intro-slide-5" class="intro-slide" style="background-image:url(images/5.jpg);"></li>
+				<li id="intro-slide-6" class="intro-slide" style="background-image:url(images/6.jpg);"></li>
+				<li id="intro-slide-7" class="intro-slide" style="background-image:url(images/7.jpg);"></li>
+				<li id="intro-slide-8" class="intro-slide" style="background-image:url(images/8.jpg);"></li>
+			</ul>
+			<a href="#menu" id="intro-close">×</a>
+		</div>
+		<div id="menu" class="app-page">
+			<a href="#dashboard" id="language-english-link">English</a>
+			<a href="#dashboard" id="language-swahili-link">Kiswahili</a>
+		</div>
+		<div id="dashboard" class="app-page">
+			<a href="#menu" id="dashboard-close"><i class="fa fa-bars"></i></a>
+			<ul class="books"></ul>
+			<a href="#" id="stats-link">Takwimu</a>
+		</div>
+		<div id="book" class="app-page">
+			<a href="#dashboard" id="book-close">×</a>
+			<div class="pages"></div>
+		</div>
+		<div id="stats" class="app-page">
+			<a href="#dashboard" id="stats-close">×</a>
+			<h1 class="stats-title">Dakika za kusoma</h1>
+			<div class="days">
+				<div id="day0" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+				<div id="day1" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+				<div id="day2" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+				<div id="day3" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+				<div id="day4" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+				<div id="day5" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+				<div id="day6" class="day">
+					<span class="day-label"></span>
+					<span class="day-sum"></span>
+				</div>
+			</div>
+			<div id="test-log">
+				
+			</div>
+		</div>
+		<script src="cordova.js"></script>
+		<script src="zepto.min.js"></script>
+		<script src="books.js"></script>
+		<script src="GALocalStorage.js"></script>
+		<script src="zepto.plugins.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
